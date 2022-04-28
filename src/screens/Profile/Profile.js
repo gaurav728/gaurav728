@@ -4,6 +4,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import theme from '../../styles/theme.style';
 import Icon from 'react-native-vector-icons/Feather';
 import FAIcon from 'react-native-vector-icons/FontAwesome5';
+import CustomButton from '../../common/CustomButton';
 
 const { width, height } = Dimensions.get('window');
 
@@ -29,6 +30,44 @@ const tempPostArr = [
     },
     {
         img: require("../../assets/img/food-img-1.webp"),
+        id: 5
+    }
+]
+
+const tempFollowsArr = [
+    {
+        img: require("../../assets/img/food-img-3.webp"),
+        userName: "nikitabansal",
+        firstName: "Nikita",
+        lastName: "Bansal",
+        id: 1
+    },
+    {
+        img: require("../../assets/img/food-img-2.webp"),
+        id: 2,
+        userName: "nikitabansal2",
+        firstName: "Nikita",
+        lastName: "Bansal",
+    },
+    {
+        img: require("../../assets/img/food-img-3.webp"),
+        userName: "nikitabansal3",
+        firstName: "Nikita",
+        lastName: "Bansal",
+        id: 3
+    },
+    {
+        img: require("../../assets/img/food-img-2.webp"),
+        userName: "nikitabansal4",
+        firstName: "Nikita",
+        lastName: "Bansal",
+        id: 4
+    },
+    {
+        img: require("../../assets/img/food-img-1.webp"),
+        userName: "nikitabansal5",
+        firstName: "Nikita",
+        lastName: "Bansal",
         id: 5
     }
 ]
@@ -61,7 +100,7 @@ export default function Profile() {
                     source={require('../../assets/img/profile-photo.png')}
                 />
                 <View style={styles.pencilIconContent}>
-                    <FAIcon name="pencil-alt" size={20} style={styles.pencilIcon} color="#fff" />
+                    <FAIcon name="pencil-alt" size={20} style={styles.pencilIcon} color="#fff" onPress={() => handleClickTab("edit")} />
 
                 </View>
 
@@ -100,49 +139,75 @@ export default function Profile() {
                         })
                     }
                 </View>
-                // <SafeAreaView style={{ flex: 1 }}>
-                //     <FlatList
-                //         data={tempPostArr}
-                //         renderItem={renderItemPost}
-                //         keyExtractor={item => item.id}
-                //     />
-                // </SafeAreaView>
+            }
+            {
+                (activeTab == "follows" || activeTab == "Following") &&
+                <View style={styles.followsContent}>
+                    {
+                        tempFollowsArr.length > 0 &&
+                        tempFollowsArr.map((item, i) => {
+                            return <>
+                                <View style={styles.followsContentMain}>
+                                    <Image
+                                        style={styles.followImage}
+                                        source={item.img}
+                                    />
+                                    <View style={styles.userDetail}>
+                                        <Text>{item.firstName} {item.lastName}</Text>
+                                        <Text>{item.userName}</Text>
+                                    </View>
+                                    <View style={styles.removeBtn}>
+                                        <TouchableOpacity>
+                                            <Text style={styles.btnTextColor}>Remove</Text>
+                                        </TouchableOpacity>
+                                    </View>
+
+                                </View>
+                            </>
+                        })
+                    }
+                </View>
+            }
+            {
+                activeTab == "edit" &&
+                <>
+                    <View style={styles.profileDetail}>
+                        <Text style={styles.headingText}>
+                            Name
+                        </Text>
+                        <Text style={styles.subText}>
+                            Nikita Bansal
+                        </Text>
+                        <View style={styles.borderBottom} >
+
+                        </View>
+                    </View>
+                    <View style={styles.profileDetail}>
+                        <Text style={styles.headingText}>
+                            Mobile
+                        </Text>
+                        <Text style={styles.subText}>
+                            91234567890
+                        </Text>
+                        <View style={styles.borderBottom} >
+
+                        </View>
+                    </View>
+                    <View style={styles.profileDetail}>
+                        <Text style={styles.headingText}>
+                            Mobile
+                        </Text>
+                        <Text style={styles.subText}>
+                            91234567890
+                        </Text>
+                        <View style={styles.borderBottom} >
+
+                        </View>
+                    </View></>
 
             }
 
-            <View style={styles.profileDetail}>
-                <Text style={styles.headingText}>
-                    Name
-                </Text>
-                <Text style={styles.subText}>
-                    Nikita Bansal
-                </Text>
-                <View style={styles.borderBottom} >
 
-                </View>
-            </View>
-            <View style={styles.profileDetail}>
-                <Text style={styles.headingText}>
-                    Mobile
-                </Text>
-                <Text style={styles.subText}>
-                    91234567890
-                </Text>
-                <View style={styles.borderBottom} >
-
-                </View>
-            </View>
-            <View style={styles.profileDetail}>
-                <Text style={styles.headingText}>
-                    Mobile
-                </Text>
-                <Text style={styles.subText}>
-                    91234567890
-                </Text>
-                <View style={styles.borderBottom} >
-
-                </View>
-            </View>
         </ScrollView>
     )
 }
@@ -216,5 +281,33 @@ const styles = StyleSheet.create({
         height: 120,
         borderWidth: 0.5,
         borderColor: '#fff'
+    },
+    followImage: {
+        width: vw * 15,
+        height: vw * 15,
+        borderRadius: 50
+    },
+    userDetail: {
+        width: vw * 55,
+        paddingLeft: 15,
+        paddingRight: 15
+    },
+    followsContentMain: {
+        flexDirection: "row",
+        marginBottom: 10,
+        width: vw * 80,
+        marginHorizontal: vw * 2
+    },
+    removeBtn: {
+        width: vw * 20,
+        height: 30,
+        borderRadius: 5,
+        justifyContent: "center",
+        alignItems: "center",
+        borderColor: "#000",
+        borderWidth: 1
+    },
+    btnTextColor: {
+        color: "#000"
     }
 })
