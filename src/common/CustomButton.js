@@ -11,7 +11,7 @@ export default function CustomButton(props) {
   return (
     <View style={styles.primaryBtn}>
         <TouchableOpacity>
-        <Text style={styles.btnTextColor}>{props.btnText}</Text>
+        <Text style={ styles.btnTextColor}>{props.btnText}</Text>
         </TouchableOpacity>
     </View>
   )

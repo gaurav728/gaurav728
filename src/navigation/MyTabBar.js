@@ -29,6 +29,9 @@ export default function MyTabBar({ state, descriptors, navigation }) {
         if(label == "Profile"){
           iconName = 'user';
         }
+        if(label == "Post"){
+          iconName = 'plus-circle';
+        }
 
         const onPress = () => {
           const event = navigation.emit({

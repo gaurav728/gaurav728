@@ -2,9 +2,8 @@ import { StyleSheet, Text, Dimensions, Image, View, FlatList, SafeAreaView } fro
 import React from 'react'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import theme from '../../styles/theme.style';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Ionicons';
 import FAIcon from 'react-native-vector-icons/FontAwesome5';
-import CustomButton from '../../common/CustomButton';
 
 const { width, height } = Dimensions.get('window');
 
@@ -72,18 +71,10 @@ const tempFollowsArr = [
     }
 ]
 
-const Item = ({ img }) => (
-    <View>
-        <Image
-            style={{ width: 20, height: 20 }}
-            source={img}
-        />
-    </View>
-);
-
 
 export default function Profile() {
-    const [activeTab, setActiveTab] = React.useState("")
+    const [activeTab, setActiveTab] = React.useState("post")
+    const [isMyProfile, setIsMyProfile] = React.useState("other")
     const handleClickTab = (type) => {
         setActiveTab(type)
     }
@@ -91,39 +82,76 @@ export default function Profile() {
     const renderItemPost = ({ item }) => (
         <Item img={item.img} />
     );
+    
 
     return (
         <ScrollView style={styles.loginMain}>
-            <View style={styles.imageIcon}>
+            <View style={styles.imageContent}>
                 <Image
-                    style={styles.profileImage}
+                    style={styles.coverPhotoImg}
                     source={require('../../assets/img/profile-photo.png')}
                 />
-                <View style={styles.pencilIconContent}>
-                    <FAIcon name="pencil-alt" size={20} style={styles.pencilIcon} color="#fff" onPress={() => handleClickTab("edit")} />
-
+                <View style={styles.profileImgContent}>
+                    <View style={styles.follwerText}>
+                        <Text style={{ color: "#000", fontWeight: "600", textAlign: "center" }}>134</Text>
+                        <Text style={{ color: "#b9b9ba", fontWeight: "500" }}>Followers</Text>
+                    </View>
+                    <Image
+                        style={styles.profileImg}
+                        source={require('../../assets/img/profile-img.jpg')}
+                    />
+                    <View style={styles.follwingText}>
+                        <Text style={{ color: "#000", fontWeight: "600", textAlign: "center" }}>134</Text>
+                        <Text style={{ color: "#b9b9ba", fontWeight: "500" }}>Followers</Text>
+                    </View>
                 </View>
-
             </View>
+            <View style={styles.nameDetail}>
+                <Text style={{ color: "#000", fontWeight: "600", fontSize: 20 }}>Nikita bansal</Text>
+                <Text>nikitabansal</Text>
+            </View>
+            {
+                isMyProfile == "myProfile" ?
+                    <View style={styles.EditBtnContent}>
+                        <View style={[styles.btnFollow, styles.btnMessage]}>
+                            <TouchableOpacity>
+                                <Text style={{ color: theme.PRIMARY_COLOR, fontSize: 16 }}>
+                                    Edit
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    :
+                    <View style={styles.followMessageBtnContent}>
+                        <View style={styles.btnFollow}>
+                            <TouchableOpacity>
+                                <Text style={styles.btnTextColor}>Follow</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={[styles.btnFollow, styles.btnMessage]}>
+                            <TouchableOpacity>
+                                <Text style={{ color: theme.PRIMARY_COLOR }}>Message</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+            }
+
             <View style={styles.userPostsFollowerContent}>
                 <TouchableOpacity onPress={() => handleClickTab("post")}>
                     <View style={[activeTab == "post" && styles.postTabActive, styles.tabsCustom]}>
-                        <Text>Posts</Text>
+                        <Icon name="ios-apps-sharp" size={20} color="#000" onPress={() => handleClickTab("edit")} style={styles.iconImage} />
                     </View>
                 </TouchableOpacity>
+
                 <TouchableOpacity onPress={() => handleClickTab("follows")}>
                     <View style={[activeTab == "follows" && styles.postTabActive, styles.tabsCustom]}>
-                        <Text>Follows</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleClickTab("Following")}>
-                    <View style={[activeTab == "Following" && styles.postTabActive, styles.tabsCustom, styles.lastTab]}>
-                        <Text style={{ alignSelf: 'flex-end' }}>Following</Text>
+                        <FAIcon name="user-tag" size={20} color="#000" onPress={() => handleClickTab("edit")} style={styles.iconImage} />
                     </View>
                 </TouchableOpacity>
             </View>
             {
-                activeTab == "post" &&
+                (activeTab == "post" || activeTab == "follows") &&
                 <View style={styles.postImageBox}>
                     {
                         tempPostArr.length > 0 &&
@@ -140,74 +168,6 @@ export default function Profile() {
                     }
                 </View>
             }
-            {
-                (activeTab == "follows" || activeTab == "Following") &&
-                <View style={styles.followsContent}>
-                    {
-                        tempFollowsArr.length > 0 &&
-                        tempFollowsArr.map((item, i) => {
-                            return <>
-                                <View style={styles.followsContentMain}>
-                                    <Image
-                                        style={styles.followImage}
-                                        source={item.img}
-                                    />
-                                    <View style={styles.userDetail}>
-                                        <Text>{item.firstName} {item.lastName}</Text>
-                                        <Text>{item.userName}</Text>
-                                    </View>
-                                    <View style={styles.removeBtn}>
-                                        <TouchableOpacity>
-                                            <Text style={styles.btnTextColor}>Remove</Text>
-                                        </TouchableOpacity>
-                                    </View>
-
-                                </View>
-                            </>
-                        })
-                    }
-                </View>
-            }
-            {
-                activeTab == "edit" &&
-                <>
-                    <View style={styles.profileDetail}>
-                        <Text style={styles.headingText}>
-                            Name
-                        </Text>
-                        <Text style={styles.subText}>
-                            Nikita Bansal
-                        </Text>
-                        <View style={styles.borderBottom} >
-
-                        </View>
-                    </View>
-                    <View style={styles.profileDetail}>
-                        <Text style={styles.headingText}>
-                            Mobile
-                        </Text>
-                        <Text style={styles.subText}>
-                            91234567890
-                        </Text>
-                        <View style={styles.borderBottom} >
-
-                        </View>
-                    </View>
-                    <View style={styles.profileDetail}>
-                        <Text style={styles.headingText}>
-                            Mobile
-                        </Text>
-                        <Text style={styles.subText}>
-                            91234567890
-                        </Text>
-                        <View style={styles.borderBottom} >
-
-                        </View>
-                    </View></>
-
-            }
-
-
         </ScrollView>
     )
 }
@@ -215,34 +175,85 @@ export default function Profile() {
 const styles = StyleSheet.create({
     loginMain: {
         backgroundColor: theme.BACKGROUND_COLOR_PRIMARY,
-        // width: width,
-        // minHeight:height,
         paddingTop: 20,
+    },
+    imageContent: {
+        position: "relative",
+        paddingBottom: 70,
+        backgroundColor: "#fff",
 
     },
-    profileImage: {
-        width: width,
-        height: vh * 40,
+    coverPhotoImg: {
+        width: vw * 100,
+        height: vw* 60
     },
-    imageIcon: {
-        position: "relative",
-        paddingBottom: 20
-    },
-    pencilIconContent: {
+    profileImgContent: {
         position: "absolute",
         bottom: 0,
-        right: 20,
-        backgroundColor: theme.PRIMARY_COLOR,
+        textAlign: "center",
+        flexDirection: "row",
+        width: "100%",
         padding: 10,
-        borderRadius: 50,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.8,
-        shadowRadius: 5,
-        elevation: 5
+        alignItems: "center",
+        justifyContent: "space-around",
     },
-    profileDetail: {
-        margin: 10
+    profileImg: {
+        width: vw * 30,
+
+        height: vw * 30,
+        borderRadius: vw * 30/2,
+        alignSelf: "center",
+        padding: 2
+    },
+    nameDetail: {
+        width: "100%",
+        alignItems: "center",
+        marginTop: 20,
+        marginBottom: 20
+    },
+    follwerText: {
+        alignSelf: "center",
+        marginTop: 40
+    },
+    follwingText: {
+        alignSelf: "center",
+        marginTop: 40
+    },
+    EditBtnContent: {
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "row",
+        width: vw * 100
+    },
+    editBtn:{
+        width: vw * 40,
+        height: 40,
+    },
+    followMessageBtnContent: {
+        flexDirection: "row",
+        alignContent: "center",
+        justifyContent: "space-around",
+        marginBottom: 20
+    },
+    btnFollow: {
+        width: vw * 30,
+        height: 40,
+        borderRadius: 5,
+        justifyContent: "center",
+        alignItems: "center",
+        borderColor: "#fff",
+        backgroundColor: theme.PRIMARY_COLOR
+    },
+    btnTextColor: {
+        color: "#fff"
+    },
+    iconImage: {
+        alignSelf: "center"
+    },
+    btnMessage: {
+        backgroundColor: "#fff",
+        borderWidth: 1,
+        borderColor: theme.PRIMARY_COLOR
     },
     userPostsFollowerContent: {
         flexDirection: "row",
@@ -255,22 +266,12 @@ const styles = StyleSheet.create({
         borderBottomColor: theme.PRIMARY_COLOR,
         borderBottomWidth: 2,
         fontWeight: "600",
-        color: "#000"
+        color: "#000",
+
     },
     tabsCustom: {
         color: "#000",
-    },
-    headingText: {
-        fontWeight: "600",
-        color: "#000"
-    },
-    subText: {
-        color: "#bbb"
-    },
-    borderBottom: {
-        borderColor: "#bbb",
-        borderBottomWidth: 1,
-        marginTop: 10
+        width: vw * 40,
     },
     postImageBox: {
         flexDirection: 'row',
@@ -282,32 +283,7 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: '#fff'
     },
-    followImage: {
-        width: vw * 15,
-        height: vw * 15,
-        borderRadius: 50
-    },
-    userDetail: {
-        width: vw * 55,
-        paddingLeft: 15,
-        paddingRight: 15
-    },
-    followsContentMain: {
-        flexDirection: "row",
-        marginBottom: 10,
-        width: vw * 80,
-        marginHorizontal: vw * 2
-    },
-    removeBtn: {
-        width: vw * 20,
-        height: 30,
-        borderRadius: 5,
-        justifyContent: "center",
-        alignItems: "center",
-        borderColor: "#000",
-        borderWidth: 1
-    },
-    btnTextColor: {
-        color: "#000"
+    pencileIcon: {
+        marginRight: 4
     }
 })
